@@ -7,14 +7,15 @@ interface LayoutProps {
   children: React.ReactNode;
   user: UserType | null;
   onLogout: () => void;
+  onLogoClick?: () => void;
 }
 
-export default function Layout({ children, user, onLogout }: LayoutProps) {
+export default function Layout({ children, user, onLogout, onLogoClick }: LayoutProps) {
   return (
     <div className="min-h-screen bg-[#f5f5f5] text-[#1a1a1a] font-sans" dir="rtl">
       <header className="bg-white border-b border-black/5 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer select-none" onClick={onLogoClick}>
             <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold">
               آ
             </div>
@@ -24,8 +25,14 @@ export default function Layout({ children, user, onLogout }: LayoutProps) {
           {user && (
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                {user.role === 'admin' && <ShieldCheck className="w-4 h-4 text-emerald-600" />}
-                <span>{user.phone}</span>
+                {user.role === 'admin' ? (
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                ) : user.avatar ? (
+                  <img src={user.avatar} alt="Avatar" className="w-6 h-6 rounded-full object-cover border border-gray-200" />
+                ) : (
+                  <User className="w-4 h-4 text-emerald-600" />
+                )}
+                <span className="font-bold">{user.name || user.phone}</span>
               </div>
               <button
                 onClick={onLogout}

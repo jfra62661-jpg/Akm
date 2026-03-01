@@ -5,6 +5,7 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
+  const disableHmr = process.env.DISABLE_HMR === 'true';
   return {
     plugins: [react(), tailwindcss()],
     define: {
